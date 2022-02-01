@@ -1,31 +1,31 @@
-const logger = require('./logger')
-
-const requestLogger = (request, response, next) => {
-  logger.info('Method:', request.method)
-  logger.info('Path:  ', request.path)
-  logger.info('Body:  ', request.body)
-  logger.info('---')
-  next()
+const requestLogger = (req, res, next) => {
+    console.log('Method:', req.method)
+    console.log('Path:', req.path)
+    console.log('Body:', req.body)
+    console.log('---')
+    next()
 }
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+const errorHandle = (error, req, res, next) => {
+    console.error(error.message)
+
+    if(error.name === 'CastError' && error.kind === 'ObjectId'){
+        return res.status(400).send({ error: 'malformatted id' })
+    } else if(error.name === 'ValidationError'){
+        return res.status(400).send({ error: error.message })
+    } else if(error.message === 404){
+        res.status(404).send({ error: 'unknown endpoint 4004' })
+    }
+
+    next(error)
 }
 
-const errorHandler = (error, request, response, next) => {
-  logger.error(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
-  }
-
-  next(error)
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: 'unknown endpoint / the url does not exist :|' })
 }
 
 module.exports = {
-  requestLogger,
-  unknownEndpoint,
-  errorHandler
+    requestLogger,
+    errorHandle,
+    unknownEndpoint
 }
