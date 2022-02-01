@@ -2,8 +2,8 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "title": "sdfdsf",
-    "author": "dsfdwf",
-    "url": "dddd",
-    "likes": 12
+    "title": "AI",
+    "author": "Axror",
+    "url": "ai.com",
+    "likes": 99
 }

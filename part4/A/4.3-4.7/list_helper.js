@@ -1,35 +1,26 @@
-var _ = require('lodash')
-
-const sum = (a, b)=> {
-    return a + b
-}
-
 const dummy = (blogs) => {
     return 1
 }
 
-const totalLikes = (blogs) => {
-    const summ = blogs.reduce((sum, nextvalue) => {
-        return sum + nextvalue.likes
-    }, 0)
-    return summ
+const totalLikes = (listWithOneBlog) => {
+    if(listWithOneBlog.length === 1){
+        return listWithOneBlog[0].likes
+    } else if(listWithOneBlog.length > 1){
+        var total = listWithOneBlog.reduce((sum, value) => {
+            return sum + value.likes
+        }, 0)
+        return total
+    }
 }
 
-const mostLikes = (blogs) => {
-    const likes = blogs.map(n => n.likes)
-    maxNum = Math.max(...likes)
-    const maxLikes = blogs.filter(n => n.likes === maxNum)
-    return maxLikes
-}
-
-const biggestBlogger = (collection) => {
-    return _.maxBy(collection, 'blogs')
+const favBlog = (listofblogs) => {
+    const like = listofblogs.map(per => per.likes)
+    const likes = listofblogs.filter(per => per.likes === Math.max(...like))
+    return likes[0]
 }
 
 module.exports = {
-    sum,
     dummy,
     totalLikes,
-    mostLikes,
-    biggestBlogger
+    favBlog
 }
